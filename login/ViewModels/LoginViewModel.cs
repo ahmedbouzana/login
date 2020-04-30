@@ -2,13 +2,10 @@
 using login.Commands;
 using login.ModelDtos;
 using login.Models;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace login.ViewModels
 {
@@ -27,7 +24,7 @@ namespace login.ViewModels
             currentUser = new LoginDto();
             LoadData();
 
-            _searchCommand = new RelayCommand(SearchById);
+            _searchCommand = new RelayCommand(SearchUser);
         }
 
         private void LoadData()
@@ -47,14 +44,14 @@ namespace login.ViewModels
             get { return _searchCommand; }
         }
 
-        public void SearchById()
+        public void SearchUser()
         {
             try
             {
                 if (currentUser.id != 0)
                 {
                     var user = users.Where(a => a.id == currentUser.id && a.password.Equals(currentUser.password)).SingleOrDefault();
-                    if(user != null)
+                    if (user != null)
                         currentUser = new LoginDto();
                 }
             }
@@ -66,6 +63,7 @@ namespace login.ViewModels
         #endregion
 
 
+        #region NotifyPropertyChanged
         private LoginDto _currentUser;
         public LoginDto currentUser
         { get { return _currentUser; } set { _currentUser = value; NotifyPropertyChanged(); } }
@@ -79,5 +77,6 @@ namespace login.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
     }
 }
